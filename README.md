@@ -41,10 +41,6 @@ $ sudo visudo
 2. Make a new file of `wsl /bin/bash -l -c "sudo service cron start"` and save a bat file as a name you defined.
 3. Copy (or move) the bat file to `C:\Users\<win-user>\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`
 
-#### References
-[in Japanese - WSL で cron を利用する方法・Windows 起動時に自動実行する方法](https://loumo.jp/archives/24595)
-[sudo のパスワードを入力なしで使うには](https://qiita.com/RyodoTanaka/items/e9b15d579d17651650b7)
-
 ## 2. Issue a cert
 To use DNS-01 challenge, you need to set DNS ID and password (or token or key) as environment variables. You can find designated variables from [dnsapi](https://github.com/acmesh-official/acme.sh/wiki/dnsapi)
 
@@ -106,14 +102,16 @@ Then, open regedit and expand `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Contr
 These scripts are based on [this page](https://superuser.com/questions/1093159/how-to-provide-a-verified-server-certificate-for-remote-desktop-rdp-connection).
 
 ## References
-[An ACME Shell script: acme.sh](https://github.com/acmesh-official/acme.sh)
-[How to provide a verified server certificate for Remote Desktop (RDP) connections to Windows 10](https://superuser.com/questions/1093159/how-to-provide-a-verified-server-certificate-for-remote-desktop-rdp-connection)
-[Certificate Provider](https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Security/About/about_Certificate_Provider?view=powershell-7)
-[DNS providers who easily integrate with Let’s Encrypt DNS validation](https://community.letsencrypt.org/t/dns-providers-who-easily-integrate-with-lets-encrypt-dns-validation/86438)
-[Working with Registry Entries](https://docs.microsoft.com/en-us/powershell/scripting/samples/working-with-registry-entries?view=powershell-7)
-[Import-PfxCertificate](https://docs.microsoft.com/en-us/powershell/module/pkiclient/import-pfxcertificate?view=win10-ps)
-[in Japanese - OpenSSLで証明書（PEM）をPKCS #12に変換](https://www.uramiraikan.net/Works/entry-2499.html)
-[Import a Signed Server Certificate into a Windows Certificate Store](https://docs.vmware.com/en/VMware-Horizon-7/7.12/horizon-scenarios-ssl-certificates/GUID-2D968AD7-ED62-46CA-B2B2-CCC526CA09F5.html)
-[Managing Windows PFX certificates through PowerShell](https://dev.to/iamthecarisma/managing-windows-pfx-certificates-through-powershell-3pj)
-[Export a PKCS#12 file without an export password?](https://stackoverflow.com/questions/27497723/export-a-pkcs12-file-without-an-export-password)
-[MyDNS.JP](https://www.mydns.jp/)
+- [An ACME Shell script: acme.sh](https://github.com/acmesh-official/acme.sh)
+- [How to provide a verified server certificate for Remote Desktop (RDP) connections to Windows 10](https://- superuser.com/questions/1093159/- how-to-provide-a-verified-server-certificate-for-remote-desktop-rdp-connection)
+- [Certificate Provider](https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Security/- About/about_Certificate_Provider?view=powershell-7)
+- [DNS providers who easily integrate with Let’s Encrypt DNS validation](https://community.letsencrypt.org/t/- dns-providers-who-easily-integrate-with-lets-encrypt-dns-validation/86438)
+- [Working with Registry Entries](https://docs.microsoft.com/en-us/powershell/scripting/samples/- working-with-registry-entries?view=powershell-7)
+- [Import-PfxCertificate](https://docs.microsoft.com/en-us/powershell/module/pkiclient/import-pfxcertificate?- view=win10-ps)
+- [in Japanese - OpenSSLで証明書（PEM）をPKCS #12に変換](https://www.uramiraikan.net/Works/entry-2499.html)
+- [Import a Signed Server Certificate into a Windows Certificate Store](https://docs.vmware.com/en/- VMware-Horizon-7/7.12/horizon-scenarios-ssl-certificates/GUID-2D968AD7-ED62-46CA-B2B2-CCC526CA09F5.html)
+- [Managing Windows PFX certificates through PowerShell](https://dev.to/iamthecarisma/- managing-windows-pfx-certificates-through-powershell-3pj)
+- [Export a PKCS#12 file without an export password?](https://stackoverflow.com/questions/27497723/- export-a-pkcs12-file-without-an-export-password)
+- [in Japanese - WSL で cron を利用する方法・Windows 起動時に自動実行する方法](https://loumo.jp/archives/24595)
+- [sudo のパスワードを入力なしで使うには](https://qiita.com/RyodoTanaka/items/e9b15d579d17651650b7)
+- [MyDNS.JP](https://www.mydns.jp/)
