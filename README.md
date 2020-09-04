@@ -113,5 +113,5 @@ These scripts are based on [this page](https://superuser.com/questions/1093159/h
 - [Managing Windows PFX certificates through PowerShell](https://dev.to/iamthecarisma/managing-windows-pfx-certificates-through-powershell-3pj)
 - [Export a PKCS#12 file without an export password?](https://stackoverflow.com/questions/27497723/export-a-pkcs12-file-without-an-export-password)
 - [in Japanese - WSL で cron を利用する方法・Windows 起動時に自動実行する方法](https://loumo.jp/archives/24595)
-- [sudo のパスワードを入力なしで使うには](https://qiita.com/RyodoTanaka/items/e9b15d579d17651650b7)
+- [in Japanese - sudo のパスワードを入力なしで使うには](https://qiita.com/RyodoTanaka/items/e9b15d579d17651650b7)
 - [MyDNS.JP](https://www.mydns.jp/)
