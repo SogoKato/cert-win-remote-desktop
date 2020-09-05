@@ -20,6 +20,7 @@ As of September 2020, Certbot for Windows does not support DNS-01 challenge, we 
 2. Issue a cert
 3. Convert to pfx (Windows format of certificate)
 4. Import pfx and do some settings
+5. Set scheduled tasks
 
 ## 1. Install acme.sh and set cron for auto renewal
 Install acme.sh in your WSL environment.
@@ -84,22 +85,35 @@ $DOMAIN = '<your-domain>'
 
 Move `powershell/cert.ps1` to Windows directory. Use Expolorer or PowerShell command like this:
 ```
-cp \\wsl$\Ubuntu\home\<user>\cert-win-remote-desktop\convert_to_pfx.sh C:\Users\<win-user>\path\to\your\folder
+cp \\wsl$\Ubuntu\home\<user>\cert-win-remote-desktop\powershell\cert.ps1 C:\Users\<win-user>\path\to\your\folder
 cd C:\Users\<win-user>\path\to\your\folder
 ```
 
 ...and execute command
 ```
-./convert_to_pfx.sh
+./cert.ps1
 ```
 
 Open mmc.exe, File > Add Remove Snap-in > Certficates > Add > Computer Account > Local Computer > OK, expand your Personal/Certificates.
 If you can see domain name we just added, pfx cert was successfully added to your computer.
 Just in case, right-click on the item and choose All Tasks / Manage Private Keys, confirm there is `NETWORK SERVICE`.
 
-Then, open regedit and expand `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp`, find `SSLCertificateSHA1Hash`. If hex values there are as same as values in `fingerprint.txt`, we are all done!
+Then, open regedit and expand `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp`, find `SSLCertificateSHA1Hash`. If hex values there are as same as values in `fingerprint.txt`, scripts have done their work without an error!
 
-These scripts are based on [this page](https://superuser.com/questions/1093159/how-to-provide-a-verified-server-certificate-for-remote-desktop-rdp-connection).
+FYI: These scripts are based on [this page](https://superuser.com/questions/1093159/how-to-provide-a-verified-server-certificate-for-remote-desktop-rdp-connection).
+
+## 5. Set scheduled tasks
+Now, you should set scheduled tasks for auto renewal.
+Using cron in WSL, create a daily job like this:
+```
+0 0 * * * /path/to/cert-win-remote-desktop/wsl/convert_to_pfx.sh
+```
+
+Then, open Task Scheduler in Windows and create a new basic task.
+It should run daily with highest privilege, only when user is logged on.
+Program/script is `C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe`, the argument is `C:\Users\<win-user>\path\to\your\folder\cert.ps1`.
+
+All done!
 
 ## References
 - [An ACME Shell script: acme.sh](https://github.com/acmesh-official/acme.sh)
