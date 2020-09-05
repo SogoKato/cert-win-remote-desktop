@@ -1,19 +1,21 @@
 # cert-win-remote-desktop
 Issue and renew certificate of Let's Encrypt using acme.sh DNS-01 validation, apply new certificate with WSL and Powershell scripts.
 
+[日本語の説明はこちら / Description in Japanese](https://qiita.com/SogoK/items/518f8c5b2200befab1da)
+
 # What is this for?
 When we use Windows 10 built-in remote desktop, the RD client ask us if we trust the self-signed certificate of the host computer. This is because Windows RD uses self-signed certificate by default. It has no problems for use, however, I am reluctant to be "Never ask again for connections to this PC" checked.
 
 If you want to get SSL certificate to avoid that prompt, this code may help you.
 
-# Prerequires
+# Prerequisites
 - You own your domain that is using DNS provider that acme.sh supports
-- You are using WSL2
+- You are using WSL
 
 You can find [supported DNS provider from here](https://community.letsencrypt.org/t/dns-providers-who-easily-integrate-with-lets-encrypt-dns-validation/86438).
 If your provider is **not** supported by acme.sh, please consider using another ACME client instead. In case your provider is not in list and you can expose 80 port, you can use HTTP-01 challenge (or certbot instead of acme.sh) alternatively (however, that needs to keep 80 open). 
 
-As of September 2020, Certbot for Windows does not support DNS-01 challenge, we need to use Certbot in WSL. In this script, PowerShell accesses files in WSL, and that is feature of WSL2. 
+As of September 2020, Certbot for Windows does not support DNS-01 challenge, we need to use Certbot in WSL.
 
 # Steps
 1. Install acme.sh and set cron for auto renewal
@@ -60,7 +62,8 @@ $ acme.sh --issue --dns <your-dns-provider> -d <your-domain>
 Once acme.sh succeeded to get cert, keys should be in `/home/<user>/.acme.sh/<your-domain>`.
 
 ## 3. Convert to pfx (Windows format of certificate)
-Using WSL/convert_to_pfx.sh, convert from cer (pem) to pfx. This script also make a `fingerprint.txt` which is SHA-1 hash value of cert.
+Using `WSL/convert_to_pfx.sh`, convert from cer (pem) to pfx. This script also make a `fingerprint.txt` which is SHA-1 hash value of cert. Before using, edit variables of `domain` and `file_dir`.
+
 ```
 $ cd ~/
 $ git clone https://github.com/norocchi/cert-win-remote-desktop.git
@@ -75,6 +78,7 @@ $ ./convert_to_pfx.sh
 ## 4. Import pfx and do some settings
 From here, you will use PowerShell terminal.
 Before moving, edit `powershell/cert.ps1`
+
 ```
 $ cd ~/cert-win-remote-desktop/powershell
 $ nano cert.ps1
@@ -84,19 +88,21 @@ $DOMAIN = '<your-domain>'
 ```
 
 Move `powershell/cert.ps1` to Windows directory. Use Expolorer or PowerShell command like this:
+
 ```
 cp \\wsl$\Ubuntu\home\<user>\cert-win-remote-desktop\powershell\cert.ps1 C:\Users\<win-user>\path\to\your\folder
 cd C:\Users\<win-user>\path\to\your\folder
 ```
 
 ...and execute command
+
 ```
 ./cert.ps1
 ```
 
-Open mmc.exe, File > Add Remove Snap-in > Certficates > Add > Computer Account > Local Computer > OK, expand your Personal/Certificates.
+Open mmc.exe, click File > Add Remove Snap-in > Certficates > Add > Computer Account > Local Computer > OK, expand your Personal/Certificates.
 If you can see domain name we just added, pfx cert was successfully added to your computer.
-Just in case, right-click on the item and choose All Tasks / Manage Private Keys, confirm there is `NETWORK SERVICE`.
+Just in case, right-click on the item and choose All Tasks > Manage Private Keys, confirm there is `NETWORK SERVICE`.
 
 Then, open regedit and expand `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp`, find `SSLCertificateSHA1Hash`. If hex values there are as same as values in `fingerprint.txt`, scripts have done their work without an error!
 
@@ -110,7 +116,12 @@ Using cron in WSL, create a daily job like this:
 ```
 
 Then, open Task Scheduler in Windows and create a new basic task.
-It should run daily with highest privilege, only when user is logged on.
+It should run
+
+- daily (after running `convert_to_pfx.sh`)
+- with highest privilege
+- only when user is logged on.
+
 Program/script is `C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe`, the argument is `C:\Users\<win-user>\path\to\your\folder\cert.ps1`.
 
 All done!
